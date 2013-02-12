@@ -1,0 +1,190 @@
+syntax on
+filetype plugin on
+filetype indent on
+
+hi MatchParen ctermbg=7
+let xml_syntax_folding=1
+set foldlevel=1
+
+" Automatically close scratch window when leaving insert mode 
+autocmd InsertLeave * if pumvisible() == 0|pclose|endif
+
+set viewoptions=folds
+" au BufWinLeave * mkview 
+" au BufWinEnter * silent loadview 
+
+set nu
+set nowrap
+set shiftwidth=4
+set tabstop=4
+set shiftround
+set softtabstop=4
+set scrolloff=4
+set shm=a
+set cindent
+set hidden
+set ttyfast
+
+call pathogen#infect()
+
+" let g:solarized_termtrans = 1
+set background=dark
+colorscheme Tomorrow-Night
+
+" set runtimepath+=~/.vim/ultisnips_rep
+let g:UltiSnipsExpandTrigger="<s-tab>"
+let g:UltiSnipsListSnippets="<c-n>"
+let g:UltiSnipsJumpForwardTrigger="<c-l>" 
+
+au FileType * setl formatoptions-=cro
+au BufRead,BufNewFile *.less setfiletype css
+
+set diffopt+=iwhite
+
+set wildmenu
+set wildmode=longest:full
+
+set wildignore+=bin/classes/**,bin/res/**,gen/com/**
+
+set completeopt=longest,menu,preview
+
+set laststatus=2
+
+au BufNewFile *.html call ReadSkel()
+au Filetype * so ~/.vim/scripts/closetag.vim
+" :au Filetype * so ~/.vim/scripts/xml.vim
+
+
+au BufEnter * setlocal omnifunc=""
+
+function! CleverTab()
+	if pumvisible()
+		return "\<C-N>"
+	endif
+	let col = col('.') - 1
+	if !col || getline('.')[col-1] !~ '\k'
+		return "\<Tab>"
+	else
+		if &omnifunc != ''
+			return "\<C-X>\<C-O>"
+		else
+			return "\<C-N>"
+		endif
+	endif
+endfunction 
+
+fun! ReadSkel()
+	if filereadable('skel')
+		0r skel
+	else
+		0r /home/lftl/.vim/skeleton.html
+	endif
+    endfunction
+
+inoremap <tab> <c-r>=CleverTab()<cr>
+
+" let g:snippetsEmu_key = "<S-Tab>"
+
+nnoremap <silent> <F4> :TlistOpen<CR>
+let g:proj_flags="imstbg"
+nnoremap <silent> <Leader>p :call Project_DoToggleProject()<CR>
+
+let g:bufExplorerOpenMode=1        
+let g:bufExplorerSplitHorizSize = 10
+nnoremap <silent> <F3> :SBufExplorer<CR>
+
+nnoremap <silent> <F2> :VSTreeExplore<CR>
+
+nmap ,a :s/^\s*\(.*\)\s*$/<a href="">\1<\/a><cr>==0/""<cr>
+vmap ,a \xa<cr>href=""<cr>?href=""<cr>5l
+nmap ,p :s/^\s*\(.*\)\s*$/<p>\1<\/p><cr>==j
+vmap ,p J<esc>,p
+nmap ,j v/^\s*$<cr>J0
+nmap ,l :s/^\s*\(.*\)\s*$/<li>\1<\/li><cr>==j
+vmap ,l :s/^\s*\(.*\)\s*$/<li>\1<\/li><cr>gv=
+vmap ,u ,lO<ul\><esc>gv=gvj<esc>O</ul><esc>==j
+nmap ,td :s/^\s*\(.*\)\s*$/<td>\1<\/td><cr>==j
+nmap ,b $a<br /><esc>0j
+nmap ,h :s/^\s*\(.*\)\s*$/<h3>\1<\/h3><cr>==j
+nmap ,h1 :s/^\s*\(.*\)\s*$/<h1>\1<\/h1><cr>==j
+nmap ,h2 :s/^\s*\(.*\)\s*$/<h2>\1<\/h2><cr>==j
+nmap <c-h> ?\(; [a-z]\)\\|\({\)<cr>?<cr>ll
+nmap <c-l> /\(; [a-z]\)\\|\({\)<cr>ll
+nmap ,f :s/;/;\r/g<cr>v%=/{<cr>%hx%a<cr><esc>
+vmap ,m \xa<cr>href="mailto:"<cr>vity?:<cr>p%
+nmap ,i :s/ \(width\\|height\)="[0-9]*"//ge<cr>:let @c=expand("%:p:h")<cr>^/src<cr>/"<cr>lv/"<cr>h"ay:r !identify c/a \| sed -e 's/.* \([0-9]*\)x\([0-9]*\).*/width="\1" height="\2"/'<cr>v$xk/src<cr>/"<cr>/<cr>a <esc>pJ
+vmap ,i xi<img<esc>p?"<cr>
+"
+" NextIndent()
+"
+" Jump to the next or previous line that has the same level or a lower
+" level of indentation than the current line.
+"
+" exclusive (bool):   true:  Motion is exclusive
+"                     false: Motion is inclusive
+" fwd (bool):         true:  Go to next line
+"                     false: Go to previous line
+" lowerlevel (bool):  true:  Go to line with lower indentation level
+"                     false: Go to line with the same indentation level
+" skipblanks (bool):  true:  Skip blank lines
+"                     false: Don't skip blank lines
+
+function! NextIndent(exclusive, fwd, lowerlevel, skipblanks)
+let line = line('.')
+let column = col('.')
+let lastline = line('$')
+let indent = indent(line)
+let stepvalue = a:fwd ? 1 : -1
+
+while (line > 0 && line <= lastline)
+let line = line + stepvalue
+if ( ! a:lowerlevel && indent(line) == indent ||
+\ a:lowerlevel && indent(line) < indent)
+if (! a:skipblanks || strlen(getline(line)) > 0)
+if (a:exclusive)
+let line = line - stepvalue
+endif
+exe line
+exe "normal " column . "|"
+return
+endif
+endif
+endwhile
+endfunc
+
+
+" Moving back and forth between lines of same or lower indentation.
+nnoremap <silent> [l :call NextIndent(0, 0, 0, 1)<cr>
+nnoremap <silent> ]l :call NextIndent(0, 1, 0, 1)<cr>
+nnoremap <silent> [L :call NextIndent(0, 0, 1, 1)<cr>
+nnoremap <silent> ]L :call NextIndent(0, 1, 1, 1)<cr>
+vnoremap <silent> [l <esc>:call NextIndent(0, 0, 0, 1)<cr>m'gv''
+vnoremap <silent> ]l <esc>:call NextIndent(0, 1, 0, 1)<cr>m'gv''
+vnoremap <silent> [L <esc>:call NextIndent(0, 0, 1, 1)<cr>m'gv''
+vnoremap <silent> ]L <esc>:call NextIndent(0, 1, 1, 1)<cr>m'gv''
+onoremap <silent> [l :call NextIndent(0, 0, 0, 1)<cr>
+onoremap <silent> ]l :call NextIndent(0, 1, 0, 1)<cr>
+onoremap <silent> [L :call NextIndent(1, 0, 1, 1)<cr>
+onoremap <silent> ]L :call NextIndent(1, 1, 1, 1)<cr> 
+
+set laststatus=2
+
+let g:dbext_default_type = 'MYSQL'
+let g:dbext_default_host = 'localhost'
+let g:dbext_default_profile_mysql = 'type=MYSQL:host=localhost:srvname=:port=:extra='
+let g:dbext_default_profile_romano = 'type=MYSQL:host=localhost:user=romano:dbname=romano:passwd=@askg'
+
+" set winminheight=1 
+" nnoremap ,k <C-W>k:resize<CR> 
+" nnoremap ,j <C-W>j:resize<CR>
+"
+" let g:snippetsEmu_key = "<S-Tab>"
+
+command! TODO tselect /^todo
+
+let g:CommandTMaxHeight = 10
+let g:CommandTAcceptSelectionSplitMap = "<C-w>"
+
+set pastetoggle=<F8>
+
+map <F9> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<' . synIDattr(synID(line("."),col("."),0),"name") . "> lo<" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>

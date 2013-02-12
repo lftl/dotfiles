@@ -1,0 +1,40 @@
+snippet oncreate "Android onCreate skeleton"
+public void onCreate(Bundle savedInstanceState) {
+	super.onCreate(savedInstanceState);
+	setContentView(R.layout.${1:main});
+}
+endsnippet
+
+snippet intent "Launch a new activity"
+Intent ${1:intent} = new Intent(${2:`!p
+snip.rv = snip.basename or "untitled"`}.this, ${3:${4:Activity}.class});
+${5:intent.putExtra(${6:"name"}, $7);}
+startActivity($1);
+endsnippet
+
+snippet cl "class" b!
+${1:public} class ${2:`!p
+snip.rv = snip.basename or "untitled"`} ${3:extends ${4:Parent} }${5:implements ${6:Interface} }{
+	$0
+}
+endsnippet
+
+snippet arrayadapter "ArrayAdapter"
+ArrayAdapter<String> ${1:adapter} = new ArrayAdapter<String>(${2:this}, ${3:R.layout.simple_list}, ${4:android.R.id.text1}, ${5:plans});
+endsnippet
+
+snippet jsonlistadaper "JSONListAdapter"
+JSONListAdapter ${1:adapter} = new JSONListAdapter(${2:this}, ${3:R.layout.simple_list}, ${4:android.R.id.text1}, ${5:info}, ${6:"name"}, ${7:"id"} ); 
+endsnippet
+
+snippet onclicklistener "ListView OnClickListner"
+${1:listView}.setOnItemClickListener(
+		new ListView.OnItemClickListener() {
+		@Override
+		public void onItemClick(AdapterView<?> a, View v, int i, long l) {
+			${2:intent}
+		}
+	}
+);
+$3
+endsnippet
