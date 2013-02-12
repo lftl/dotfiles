@@ -1,0 +1,15 @@
+#compdef propel-gen propel-gen5
+
+_propel_cmds () {
+	local list
+	list=( "old-om" "om" "sql" "datasql" "insert-sql" "datadump" "convert-conf" )
+	compadd $list
+}
+
+_propel () {
+
+  _arguments -s \
+	  '*:propel-gen command:_propel_cmds'
+}
+
+_propel "$@"

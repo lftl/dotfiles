@@ -1,0 +1,126 @@
+my_accounts=(
+	example@example.com
+)
+
+source $HOME/.zsh-local
+
+export FIREFOX_DSP=auto
+export LC_ALL=en_US.utf8
+export repo=file:///home/lftl/repos
+export PAGER=zless
+export EDITOR=vim
+export PATH=$PATH:$HOME/dotfiles/bin:$HOME/bin:$HOME/.gem/ruby/1.9.1/bin
+export BROWSER=chromium
+export LS_COLORS='no=00:fi=01;37:di=00;37:ln=01;36:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arj=01;31:*.taz=01;31:*.lzh=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.gz=01;31:*.bz2=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;3:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.mpg=01;35:*.mpeg=01;35:*.avi=01;35:*.fli=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.ogg=01;35:*.mp3=01;35:*.wav=01;35:'
+
+#History options settings
+HISTSIZE=10000
+SAVEHIST=10000
+HISTFILE=~/.history
+setopt HIST_FIND_NO_DUPS    \
+ SHARE_HISTORY              \
+ HIST_IGNORE_ALL_DUPS       \
+ HIST_NO_STORE              \
+ HIST_VERIFY                \
+ AUTO_PARAM_SLASH           \
+ INC_APPEND_HISTORY
+
+ 
+
+#Command to behave like back and forward when changing dirs
+# depth of the directory history
+DIRSTACKSIZE=5
+# simply type the directory name; zsh adds the 'cd' command
+setopt AUTO_CD
+
+bindkey "\e[A" up-line-or-search
+bindkey "\e[B" down-line-or-search
+bindkey " " magic-space
+bindkey "^f" vi-forward-blank-word
+bindkey "^b" vi-backward-blank-word
+bindkey "^j" vi-find-next-char
+bindkey "^k" vi-find-prev-char
+bindkey "^l" vi-repeat-find
+bindkey "^a" beginning-of-line
+bindkey "^e" end-of-line
+
+bindkey "^[." insert-last-word
+
+#set other miscellaneous options
+setopt CORRECT
+
+#Aliases for common functions
+alias ftp="lftp"
+alias ls="ls -p --color=auto"
+alias ssh='ssh -2'
+alias hg='history 1| grep -i'
+alias bzflag='fortune verses'
+alias grep='grep --color'
+alias less='zless'
+alias svngrep="grep -r --exclude=entries --exclude=\*svn-base"
+# alias rename="/usr/bin/perlbin/vendor/rename"
+
+#Set up my prompt
+fpath=(~/dotfiles/zsh/funcs $fpath)
+autoload -U ~/dotfiles/zsh/funcs/_*(:t)
+autoload -U promptinit
+promptinit
+
+case $TERM in
+	dtterm) prompt bart
+	;;
+	*) prompt phil
+	;;
+esac
+
+#Set up completion
+autoload -U compinit
+compinit
+
+#zstyle parameters for completion
+setopt COMPLETE_IN_WORD
+cdpath=( ~ ~/projects)
+zstyle ':completion:*:cd:*' tag-order local-directories \ path-directories
+
+zstyle ':completion::complete:xmms:option--play-1:*' files
+
+
+zstyle '*:my-accounts' users-hosts $my_accounts
+
+# zstyle ':completion:*:other-accounts' users-hosts $other_accounts
+zstyle ':completion:*' use-cache on 
+zstyle ':completion:*' cache-path ~/.zcache
+zstyle ':completion:*:rm:*' ignore-line yes
+zstyle ':completion:*:matches' group 'yes'
+zstyle ':completion:*:descriptions' format "%B---- %d%b"
+
+# Makes the kill command completion show my processes and more info
+zstyle ':completion:*:*:kill:*:processes' command 'ps -u $USER -o pid,time,command'
+
+
+tmuxw() {
+    tmux new-window $2 \; move-window -t $1
+}
+
+backward-delete-to-slash () {
+	local WORDCHARS=${WORDCHARS//\//}
+	zle .backward-delete-word
+}
+
+zle -N backward-delete-to-slash
+bindkey "^W" backward-delete-to-slash
+
+#Function to set the title bar in some terminals
+chpwd() {
+    [[ -t 1 ]] || return
+    case $TERM in
+      sun-cmd) print -Pn "\e]l%~\e\\"
+        ;;
+      *xterm*|rxvt*|(dt|k|E)term) print -Pn "\e]2;%n@%m %~\a"
+        ;;
+    esac
+}
+
+umask 002
+
+chpwd  

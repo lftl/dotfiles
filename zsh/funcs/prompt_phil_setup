@@ -1,0 +1,165 @@
+function precmd {
+
+local TERMWIDTH
+(( TERMWIDTH = ${COLUMNS} - 1 ))
+
+###
+# See if we can use colors.
+
+# Must have the zsh/termcap module loaded for this
+if [[ $terminfo[colors] -ge 8 ]]; then
+    local RED="%{[1;31m%}"
+    local LIGHT_RED="%{[0;31m%}"
+    local CYAN="%{[1;36m%}"
+    local LIGHT_CYAN="%{[0;36m%}"
+    local BLUE="%{[1;34m%}"
+    local LIGHT_BLUE="%{[0;34m%}"
+    local GREEN="%{[1;32m%}"
+    local LIGHT_GREEN="%{[0;32m%}"
+    local MAGENTA="%{[1;35m%}"
+    local LIGHT_MAGENTA="%{[0;35m%}"
+    local YELLOW="%{[1;33m%}"
+    local LIGHT_YELLOW="%{[0;33m%}"
+    local GRAY="%{[1;30m%}"
+    local LIGHT_GRAY="%{[0;37m%}"
+    local WHITE="%{[1;37m%}"
+    local NO_COLOUR="%{[0m%}"
+    local BEGINNING_OF_LINE="%{[80D%}"
+else
+    local RED=""
+    local LIGHT_RED=""
+    local CYAN=""
+    local LIGHT_CYAN=""
+    local BLUE=""
+    local LIGHT_BLUE=""
+    local GREEN=""
+    local LIGHT_GREEN=""
+    local MAGENTA=""
+    local LIGHT_MAGENTA=""
+    local YELLOW=""
+    local LIGHT_YELLOW=""
+    local GRAY=""
+    local LIGHT_GRAY=""
+    local WHITE=""
+    local NO_COLOUR=""
+    
+    local BEGINNING_OF_LINE=""
+fi
+
+
+###
+# APM detection
+# 
+# if which apm > /dev/null; then
+#     local power=$(apm | sed -e "s/.*: \([1-9][0-9]*%\) */\1%/")
+#     local APM="$RED${power}$LIGHT_BLUE:"
+# else
+#     local APM=""
+# fi
+
+
+###
+# Decide whether to set a screen title
+if [[ "$STY" != "" ]]; then
+   local STITLE='%{kzsh\%}'
+else
+   local STITLE=''
+fi
+
+
+###
+# Decide if we need to set titlebar text.
+#
+case $TERM in
+    xterm*)
+	local TITLEBAR='%{]0;%n@%m:%~%}'
+	;;
+    screen*)
+	local TITLEBAR='%{]0;%n@%m:%~ screen %}'
+	;;
+    *)
+	local TITLEBAR=""
+	;;
+esac
+
+###
+# See if we can use extended characters to look nicer.
+#
+#case $TERM in
+#    linux|xterm*)
+#	local SHIFT_IN='%{%}'
+#	local SHIFT_OUT='%{%}'
+#	local HBAR='q'
+#	local ULCORNER='l'
+#	local LLCORNER='m'
+#	local LRCORNER='j'
+#	local URCORNER='k'
+#	;;
+#    *)
+#	local SHIFT_IN=""
+#	local SHIFT_OUT=""
+#	local HBAR=' '
+#	local ULCORNER=''
+#	local LLCORNER=''
+#	local LRCORNER=''
+#	local URCORNER=''
+#	;;
+#esac
+
+typeset -A altchar
+set -A altchar ${(s..)terminfo[acsc]}
+PR_SET_CHARSET="%{$terminfo[enacs]%}"
+SHIFT_IN="%{$terminfo[smacs]%}"
+SHIFT_OUT="%{$terminfo[rmacs]%}"
+HBAR=${altchar[q]:--}
+ULCORNER=${altchar[l]:--}
+LLCORNER=${altchar[m]:--}
+LRCORNER=${altchar[j]:--}
+URCORNER=${altchar[k]:--}
+
+
+###
+# Truncate the path if it's to long.
+
+local fill=""
+local pwdlen=""
+
+let local promptsize=$(print -Pn -- "--(%n@%m:%l)---()--" | wc -c | tr -d " ")
+let local pwdsize=$(print -Pn -- "%~" | wc -c | tr -d " ")
+
+if [[ "$promptsize + $pwdsize" -gt $TERMWIDTH ]]; then
+   let pwdlen="$TERMWIDTH - $promptsize"
+else
+   let fillsize="$TERMWIDTH - ($promptsize + $pwdsize)"
+   while [[ $fillsize -gt 0 ]] 
+   do 
+      fill="${fill}$HBAR"
+      let fillsize=${fillsize}-1
+   done
+fi
+
+local OBRACK='['
+local CBRACK=']'
+###
+# Finally, the prompt.
+
+PROMPT="$STITLE$TITLEBAR$BEGINNING_OF_LINE\
+$WHITE$OBRACK\
+$LIGHT_GRAY%D{%a %b %d %H:%M}\
+$WHITE$CBRACK$SHIFT_IN$HBAR$GRAY$HBAR$fill$WHITE$HBAR$SHIFT_OUT$OBRACK\
+$LIGHT_GRAY%$pwdlen<...<%~%<<\
+$WHITE$CBRACK$SHIFT_IN$HBAR$GRAY$URCORNER$SHIFT_OUT\
+
+$WHITE$OBRACK\
+$LIGHT_GRAY%n@$YELLOW%m$LIGHT_GRAY\
+$WHITE$CBRACK\$\
+$LIGHT_GRAY "
+
+}
+
+# preexec () {
+#    if [[ "$STY" != "" ]]; then
+#	local CMD=`echo $1 | sed 's/^sudo //; s/ .*//'`
+#	echo -n "k$CMD\\"
+#    fi
+# }
