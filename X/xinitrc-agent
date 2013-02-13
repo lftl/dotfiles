@@ -1,0 +1,23 @@
+#!/bin/sh
+#
+# ~/.xinitrc
+#
+# Executed by startx (run your window manager from here)
+
+# exec gnome-session
+# exec startkde
+# exec startxfce4
+# ...or the Window Manager of your choice
+
+export DE=gnome
+export BROWSER=chromium
+gnome-terminal -e 'tmux -2 attach'&
+batterymon&
+synapse&
+chromium&
+xmodmap ~/.Xmodmap&
+xset r rate 200 25&
+xscreensaver -no-splash&
+xset -b&
+
+exec awesome
