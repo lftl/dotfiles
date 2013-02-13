@@ -1,0 +1,12 @@
+[core]
+	excludesfile = /home/lftl/.gitignore
+[color]
+	branch = auto
+	status = auto
+	diff = auto
+	ui = auto
+[user]
+	name = AUTHOR
+	email = AUTHOREMAIL
+[push]
+	default = simple
