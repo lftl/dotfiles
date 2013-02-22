@@ -25,13 +25,14 @@ set cindent
 set hidden
 set ttyfast
 
+set runtimepath+=~/.vim-eclim
+
 call pathogen#infect()
 
 " let g:solarized_termtrans = 1
 set background=dark
 colorscheme Tomorrow-Night
 
-" set runtimepath+=~/.vim/ultisnips_rep
 let g:UltiSnipsExpandTrigger="<s-tab>"
 let g:UltiSnipsListSnippets="<c-n>"
 let g:UltiSnipsJumpForwardTrigger="<c-l>" 
