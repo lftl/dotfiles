@@ -1,0 +1,16 @@
+#!/bin/bash
+
+FULLPATH=`pwd`
+
+while [ $FULLPATH != $HOME ] && [ ! -f $FULLPATH/.project ]; do
+    FULLPATH=`dirname $FULLPATH`;
+done
+
+source $FULLPATH/.project;
+
+FULLPATH=`readlink -f $1`
+RELPATH=`echo $FULLPATH | sed "s|$LOCAL_ROOT||"`
+
+VIMREMOTE=`echo $REMOTE_ROOT | sed 's|:|/|'`
+
+vimdiff $1 scp://$VIMREMOTE/$RELPATH
