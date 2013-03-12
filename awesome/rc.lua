@@ -41,6 +41,7 @@ end
 -- {{{ Variable definitions
 -- Themes define colours, icons, and wallpapers
 beautiful.init("/usr/share/awesome/themes/default/theme.lua")
+beautiful.wallpaper = "/home/lftl/.Earthrise_seen_from_Apollo_11.jpg"
 
 -- This is used later as the default terminal and editor to run.
 terminal = "xterm"
@@ -75,7 +76,7 @@ local layouts =
 -- {{{ Wallpaper
 if beautiful.wallpaper then
     for s = 1, screen.count() do
-        gears.wallpaper.maximized(beautiful.wallpaper, s, true)
+        gears.wallpaper.maximized(beautiful.wallpaper, s, false)
     end
 end
 -- }}}
@@ -103,7 +104,7 @@ mymainmenu = awful.menu({ items = {
 	{ "awesome", myawesomemenu, beautiful.awesome_icon },
 	{ "Gnome Terminal", "gnome-terminal -e 'tmux -2 attach'"},
 	{ "Empathy", "empathy" },
-	{ "Chromium", "chromium"},
+	{ "Chromium", "chromium --disk-cache-dir=/tmp/lftl-chrome-cache"},
 	{ "open terminal", terminal },
 	{ "peter", "gnome-terminal -e \"ssh -X -t peter.wehrenberg.us 'screen -d -R'\""},
 }

@@ -14,7 +14,7 @@ export BROWSER=chromium
 gnome-terminal -e 'tmux -2 attach'&
 batterymon&
 synapse&
-chromium&
+chromium --disk-cache-dir=/tmp/lftl-chrome-cache&
 xmodmap ~/.Xmodmap&
 xset r rate 200 25&
 xscreensaver -no-splash&
