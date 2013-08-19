@@ -19,9 +19,13 @@ if [ -f $FULLPATH/.project ]; then
     dry_run=""
     recursive=""
     compress=""
+	verbose=0
 
-    while getopts "drz" flag;  do
+    while getopts "drzv" flag;  do
         case $flag in
+			v)
+				verbose=1
+				;;
             z)
                 compress="-z"
                 ;;
@@ -61,5 +65,8 @@ if [ -f $FULLPATH/.project ]; then
         fi
     fi
 
+	if [ $verbose == 1 ] ; then
+		echo "rsync $other_options -vi $compress $excludes $dry_run $recursive $FULLPATH $REMOTE_ROOT$RELPATH"
+	fi
     rsync $other_options -vi $compress $excludes $dry_run $recursive $FULLPATH $REMOTE_ROOT$RELPATH
 fi

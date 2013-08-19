@@ -5,3 +5,14 @@ endsnippet
 snippet iecss "IE Conditional CSS"
 <!--[if lt IE ${1:7}]>${2:<link rel="stylesheet" type="text/css" media="all" href="${3:ie.css}" />}<![endif]-->
 endsnippet
+
+snippet cgw
+<div class="control-group">
+	<label class="control-label">${1}</label>
+	<div class="controls">{{form.${1/\s+/_/g}}}</div>
+</div>
+endsnippet
+
+snippet static "Flask static url_for" w
+{{ url_for('static', filename='${1}') }}
+endsnippet

@@ -1,1 +1,1 @@
-nnoremap <F5> :JavaImportMissing<cr>:JavaImportClean<cr>
+nnoremap <F5> :JavaImportOrganize<cr>

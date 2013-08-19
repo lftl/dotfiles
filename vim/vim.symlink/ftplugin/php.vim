@@ -33,11 +33,12 @@ unlet b:did_indent
 autocmd BufEnter *php setlocal indentexpr=MyPhpIndent()
 
 fun! MyPhpIndent()
-	let indent = GetPhpIndent()
+	let ind = GetPhpIndent()
 	if b:InPHPcode == 1
-		return indent
+		return ind
 	else
-		return HtmlIndentGet(line("."))
+		let b:indent = {"lnum": -1}
+		return HtmlIndent()
 	endif
 endfunc
 

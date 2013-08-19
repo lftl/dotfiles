@@ -13,7 +13,7 @@ export DE=gnome
 export BROWSER=chromium
 gnome-terminal -e 'tmux -2 attach'&
 batterymon&
-synapse&
+synapse -s&
 chromium --disk-cache-dir=/tmp/lftl-chrome-cache&
 xmodmap ~/.Xmodmap&
 xset r rate 200 25&

@@ -36,6 +36,7 @@ colorscheme Tomorrow-Night
 let g:UltiSnipsExpandTrigger="<s-tab>"
 let g:UltiSnipsListSnippets="<c-n>"
 let g:UltiSnipsJumpForwardTrigger="<c-l>" 
+let g:UltiSnipsUsePythonVersion = 2
 
 au FileType * setl formatoptions-=cro
 au BufRead,BufNewFile *.less setfiletype css
@@ -189,3 +190,6 @@ let g:CommandTAcceptSelectionSplitMap = "<C-w>"
 set pastetoggle=<F8>
 
 map <F9> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<' . synIDattr(synID(line("."),col("."),0),"name") . "> lo<" . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
+
+nnoremap [C gt
+nnoremap [D gT

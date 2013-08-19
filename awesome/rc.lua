@@ -41,7 +41,7 @@ end
 -- {{{ Variable definitions
 -- Themes define colours, icons, and wallpapers
 beautiful.init("/usr/share/awesome/themes/default/theme.lua")
-beautiful.wallpaper = "/home/lftl/.Earthrise_seen_from_Apollo_11.jpg"
+beautiful.wallpaper = "/home/lftl/.windows_xp_bliss-wide.jpg"
 
 -- This is used later as the default terminal and editor to run.
 terminal = "xterm"
