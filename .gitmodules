@@ -19,3 +19,6 @@
 [submodule "vim/vim.symlink/bundle/syntastic"]
 	path = vim/vim.symlink/bundle/syntastic
 	url = https://github.com/scrooloose/syntastic.git
+[submodule "vim/vim.symlink/bundle/coveragepy.vim"]
+	path = vim/vim.symlink/bundle/coveragepy.vim
+	url = https://github.com/alfredodeza/coveragepy.vim
