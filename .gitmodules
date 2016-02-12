@@ -22,3 +22,6 @@
 [submodule "vim/vim.symlink/bundle/coveragepy.vim"]
 	path = vim/vim.symlink/bundle/coveragepy.vim
 	url = https://github.com/alfredodeza/coveragepy.vim
+[submodule "vim/vim.symlink/bundle/vimux"]
+	path = vim/vim.symlink/bundle/vimux
+	url = git@github.com:benmills/vimux.git

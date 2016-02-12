@@ -80,7 +80,7 @@ fun! ReadSkel()
 	if filereadable('skel')
 		0r skel
 	else
-		0r /home/lftl/.vim/skeleton.html
+		0r $HOME/.vim/skeleton.html
 	endif
     endfunction
 
@@ -90,12 +90,16 @@ inoremap <tab> <c-r>=CleverTab()<cr>
 
 nnoremap <silent> <F4> :TlistOpen<CR>
 let g:proj_flags="imstbg"
+
 nnoremap <silent> <Leader>p :call Project_DoToggleProject()<CR>
+
+nnoremap <silent> <Leader>h :call VimuxRunCommand("bin/nosetests --logging-level=ERROR tests/")<CR>
+nnoremap <silent> <Leader>w :call VimuxCloseRunner()<CR>
 
 let g:bufExplorerOpenMode=1        
 let g:bufExplorerSplitHorizSize = 10
-nnoremap <silent> <F3> :SBufExplorer<CR>
 
+nnoremap <silent> <F3> :SBufExplorer<CR>
 nnoremap <silent> <F2> :VSTreeExplore<CR>
 
 nmap ,a :s/^\s*\(.*\)\s*$/<a href="">\1<\/a><cr>==0/""<cr>
