@@ -16,3 +16,10 @@ endsnippet
 snippet static "Flask static url_for" w
 {{ url_for('static', filename='${1}') }}
 endsnippet
+
+snippet fg "Bootstrap Form Group"
+<div class="form-group">
+	<label class="col-md-3 control-label">$1</label>
+	<div class="col-md-6"><input class="form-control" data-ng-model="${1/\s+//g}" /></div>
+</div>
+endsnippet
