@@ -68,5 +68,5 @@ if [ -f $FULLPATH/.project ]; then
 	if [ $verbose == 1 ] ; then
 		echo "rsync $other_options -vi $compress $excludes $dry_run $recursive $FULLPATH $REMOTE_ROOT$RELPATH"
 	fi
-    rsync $other_options -vi $compress $excludes $dry_run $recursive $FULLPATH $REMOTE_ROOT$RELPATH
+    rsync $other_options -vi --progress $compress $excludes $dry_run $recursive $FULLPATH $REMOTE_ROOT$RELPATH
 fi
