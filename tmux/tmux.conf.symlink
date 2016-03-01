@@ -45,4 +45,7 @@ set-window-option -g window-status-current-fg yellow #orange
 set-window-option -g window-status-current-bg colour0
 set-window-option -g window-status-current-attr default
 
+# Tmux delays escape which is really annoying in vim
+set -sg escape-time 10
+
 new

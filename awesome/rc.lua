@@ -86,7 +86,7 @@ end
 tags = {}
 for s = 1, screen.count() do
     -- Each screen has its own tag table.
-    tags[s] = awful.tag({ "term", "www", "im", 4, 5, 6, 7, 8, 9 }, s, layouts[1])
+    tags[s] = awful.tag({ "term", 2, 3, 4, 5, 6, 7, 8, 9 }, s, layouts[1])
 	awful.tag.setproperty(tags[s][3], "mwfact", 0.2)
 	awful.tag.setproperty(tags[s][3], "ncol", 2)
 	awful.tag.setproperty(tags[s][2], "layout", layouts[6])
@@ -102,11 +102,9 @@ myawesomemenu = {
 
 mymainmenu = awful.menu({ items = { 
 	{ "awesome", myawesomemenu, beautiful.awesome_icon },
-	{ "Gnome Terminal", "gnome-terminal -e 'tmux -2 attach'"},
-	{ "Empathy", "empathy" },
-	{ "Chromium", "chromium --disk-cache-dir=/tmp/lftl-chrome-cache"},
+	{ "Gnome Terminal", "gnome-terminal -e 'tmux attach'"},
+	{ "Chromium", "chromium"},
 	{ "open terminal", terminal },
-	{ "peter", "gnome-terminal -e \"ssh -X -t peter.wehrenberg.us 'screen -d -R'\""},
 }
 						})
 
@@ -231,8 +229,8 @@ globalkeys = awful.util.table.join(
 	awful.key({ "Mod4" }, "h",  function() awful.layout.set(awful.layout.suit.tile.top) end),
 	awful.key({ "Mod4" }, "f",  function() awful.layout.set(awful.layout.suit.max) end),
 	awful.key({}, "#121",  function() awful.util.spawn("amixer sset Master toggle") end),
-	awful.key({}, "#122",  function() awful.util.spawn("amixer sset Master 4-") end),
-	awful.key({}, "#123",  function() awful.util.spawn("amixer sset Master 4+") end),
+	awful.key({}, "#122",  function() awful.util.spawn("pactl set-sink-volume alsa_output.pci-0000_00_1b.0.hdmi-stereo-extra1 -4%") end),
+	awful.key({}, "#123",  function() awful.util.spawn("pactl set-sink-volume alsa_output.pci-0000_00_1b.0.hdmi-stereo-extra1 +4%") end),
 
     awful.key({ "Mod4" }, "x",
               function ()
@@ -306,20 +304,10 @@ awful.rules.rules = {
                      focus = true,
                      keys = clientkeys,
                      buttons = clientbuttons } },
-    { rule = { class = "MPlayer" }, properties = { floating = true } },
     { rule = { class = "Gimp" }, properties = { tag = tags[1][5] } },
-
-	{rule = {class = "Pidgin", role = "buddy_list"}, properties = { target = "master", tag = tags[1][3] }},
-	{rule = {class = "Pidgin", role = "conversation"}, properties = { target = "slave", tag = tags[1][3] }, callback   = awful.client.setslave },
-
-	{rule = {class = "Empathy", role = "contact_list"}, properties = { target = "master", tag = tags[1][3] }},
-	{rule = {class = "Empathy", role = "chat"}, properties = { target = "slave", tag = tags[1][3] }, callback   = awful.client.setslave },
 
 	{ rule = { class = "Chromium" }, properties = { tag = tags[1][2] } },
 	{ rule = { class = "Exe"}, properties = {floating = true}},
-
-	{ rule = { class = "URxvt" }, properties = { tag = tags[1][1] } },
-	{ rule = { class = "Eclipse" }, properties = { tag = tags[1][6] } },
 
 	{ rule = { class = "OpenOffice.org 3.2" }, properties = { tag = tags[1][4], switchtotag = tags[1][4] } },
 	
@@ -394,6 +382,7 @@ client.connect_signal("focus", function(c) c.border_color = beautiful.border_foc
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 
 awful.tag.attached_connect_signal(nil,"property::layout", function(t) restore_floatgeoms(t) end)
+
 function restore_floatgeoms(t) 
 	for k, c in ipairs(t:clients()) do
 		if ((awful.layout.get(mouse.screen) == awful.layout.suit.floating) or (awful.client.floating.get(c) == true)) then
@@ -401,7 +390,12 @@ function restore_floatgeoms(t)
 		end
 	end
 end
-client.connect_signal("unmanage", function(c) floatgeoms[c.window] = nil end)    
+
+client.connect_signal("unmanage",
+    function(c)
+        floatgeoms[c.window] = nil
+    end
+)    
 
 client.connect_signal("manage", function(c)
 	if ((awful.layout.get(mouse.screen) == awful.layout.suit.floating) or (awful.client.floating.get(c) == true)) then
