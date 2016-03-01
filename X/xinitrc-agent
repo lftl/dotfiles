@@ -10,11 +10,11 @@
 # ...or the Window Manager of your choice
 
 export DE=gnome
-export BROWSER=chromium
+export BROWSER=firefox-beta-bin
 gnome-terminal -e 'tmux -2 attach'&
 batterymon&
 synapse -s&
-chromium --disk-cache-dir=/tmp/lftl-chrome-cache&
+firefox-beta-bin&
 xmodmap ~/.Xmodmap&
 xset r rate 200 25&
 xscreensaver -no-splash&
