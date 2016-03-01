@@ -13,4 +13,4 @@ RELPATH=`echo $FULLPATH | sed "s|$LOCAL_ROOT||"`
 
 VIMREMOTE=`echo $REMOTE_ROOT | sed 's|:|/|'`
 
-vimdiff $1 scp://$VIMREMOTE/$RELPATH
+vimdiff $1 rsync://$VIMREMOTE/$RELPATH
