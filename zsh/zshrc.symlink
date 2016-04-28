@@ -104,7 +104,7 @@ zstyle ':completion:*:*:kill:*:processes' command 'ps -u $USER -o pid,time,comma
 
 
 tmuxw() {
-    tmux new-window -d -t $1 $2
+    tmux new-window -c '#{pane_current_path}' -d -t $1 $2
 }
 
 backward-delete-to-slash () {
