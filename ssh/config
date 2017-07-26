@@ -1,0 +1,12 @@
+SendEnv LANG LC_ALL
+
+# Enable connection sharing
+ControlMaster auto
+ControlPath /tmp/ssh_mux_%h_%p_%r
+
+# Make connections persist for 5m 
+ControlPersist 5m
+ServerAliveInterval 30
+
+Host *
+User lftl
