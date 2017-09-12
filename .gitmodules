@@ -16,9 +16,6 @@
 [submodule "vim/vim.symlink/bundle/syntastic"]
 	path = vim/vim.symlink/bundle/syntastic
 	url = https://github.com/scrooloose/syntastic.git
-[submodule "vim/vim.symlink/bundle/coveragepy.vim"]
-	path = vim/vim.symlink/bundle/coveragepy.vim
-	url = https://github.com/alfredodeza/coveragepy.vim
 [submodule "vim/vim.symlink/bundle/vimux"]
 	path = vim/vim.symlink/bundle/vimux
 	url = git@github.com:benmills/vimux.git
@@ -28,3 +25,12 @@
 [submodule "vim/vim.symlink/bundle/vim-coffee-script"]
 	path = vim/vim.symlink/bundle/vim-coffee-script
 	url = https://github.com/kchmck/vim-coffee-script
+[submodule "vim/vim.symlink/bundle/fzf.vim"]
+	path = vim/vim.symlink/bundle/fzf.vim
+	url = git@github.com:junegunn/fzf.vim.git
+[submodule "vim/vim.symlink/bundle/deoplete.nvim"]
+	path = vim/vim.symlink/bundle/deoplete.nvim
+	url = git@github.com:Shougo/deoplete.nvim.git
+[submodule "vim/vim.symlink/bundle/deoplete-jedi"]
+	path = vim/vim.symlink/bundle/deoplete-jedi
+	url = git@github.com:zchee/deoplete-jedi.git

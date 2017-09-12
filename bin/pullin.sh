@@ -29,6 +29,9 @@ if [ -f $FULLPATH/.project ]; then
                     d)
                             dry_run="--dry-run"
                             ;;
+                    z)
+                        compress="-z"
+                        ;;
                     r)
                             recursive="-r";
                             ;;
