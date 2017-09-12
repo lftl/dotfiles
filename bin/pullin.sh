@@ -19,9 +19,13 @@ if [ -f $FULLPATH/.project ]; then
 
     dry_run=""
     recursive=""
+    compress=""
 
-    while getopts "rd" flag;  do
+    while getopts "rdz" flag;  do
             case $flag in
+                    z)
+                            compress="-z"
+                            ;;
                     d)
                             dry_run="--dry-run"
                             ;;
@@ -43,5 +47,5 @@ if [ -f $FULLPATH/.project ]; then
 
     FULLPATH=`dirname "$FULLPATH"`;
 
-    rsync $other_options $dry_run $recursive -vi $REMOTE_ROOT/$RELPATH $FULLPATH
+    rsync $other_options $compress $dry_run $recursive $excludes -vi $REMOTE_ROOT/$RELPATH $FULLPATH
 fi
