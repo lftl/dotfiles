@@ -34,3 +34,6 @@
 [submodule "vim/vim.symlink/bundle/deoplete-jedi"]
 	path = vim/vim.symlink/bundle/deoplete-jedi
 	url = git@github.com:zchee/deoplete-jedi.git
+[submodule "vim/vim.symlink/bundle/fzf"]
+	path = vim/vim.symlink/bundle/fzf
+	url = git@github.com:junegunn/fzf.git
