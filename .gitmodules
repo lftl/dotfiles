@@ -34,6 +34,12 @@
 [submodule "vim/vim.symlink/bundle/deoplete-jedi"]
 	path = vim/vim.symlink/bundle/deoplete-jedi
 	url = git@github.com:zchee/deoplete-jedi.git
-[submodule "vim/vim.symlink/bundle/fzf"]
-	path = vim/vim.symlink/bundle/fzf
-	url = git@github.com:junegunn/fzf.git
+[submodule "vim/vim.symlink/bundle/LanguageClient-neovim"]
+	path = vim/vim.symlink/bundle/LanguageClient-neovim
+	url = https://github.com/autozimu/LanguageClient-neovim
+[submodule "vim/vim.symlink/bundle/typescript-vim"]
+	path = vim/vim.symlink/bundle/typescript-vim
+	url = https://github.com/leafgarland/typescript-vim.git
+[submodule "vim/vim.symlink/bundle/coveragepy.vim"]
+	path = vim/vim.symlink/bundle/coveragepy.vim
+	url = https://github.com/alfredodeza/coveragepy.vim.git
