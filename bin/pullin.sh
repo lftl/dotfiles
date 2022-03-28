@@ -1,6 +1,6 @@
 #!/bin/sh
 
-FULLPATH=`pwd`
+FULLPATH=`pwd -P`
 TOPDIR=$HOME/projects
 
 while [ $FULLPATH != $TOPDIR ] && [ ! -x $FULLPATH/pullin.sh ] && [ ! -f $FULLPATH/.project ]; do
@@ -20,9 +20,13 @@ if [ -f $FULLPATH/.project ]; then
     dry_run=""
     recursive=""
     compress=""
+	verbose=0
 
-    while getopts "rdz" flag;  do
+    while getopts "rdzv" flag;  do
             case $flag in
+                    v)
+                        verbose=1
+                        ;;
                     z)
                             compress="-z"
                             ;;
@@ -50,5 +54,8 @@ if [ -f $FULLPATH/.project ]; then
 
     FULLPATH=`dirname "$FULLPATH"`;
 
+	if [ $verbose == 1 ] ; then
+		echo "rsync $other_options $compress $dry_run $recursive $excludes -vi $REMOTE_ROOT/$RELPATH $FULLPATH"
+	fi
     rsync $other_options $compress $dry_run $recursive $excludes -vi $REMOTE_ROOT/$RELPATH $FULLPATH
 fi

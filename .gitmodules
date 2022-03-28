@@ -43,3 +43,9 @@
 [submodule "vim/vim.symlink/bundle/coveragepy.vim"]
 	path = vim/vim.symlink/bundle/coveragepy.vim
 	url = https://github.com/alfredodeza/coveragepy.vim.git
+[submodule "vim/vim.symlink/bundle/vim-osc52"]
+	path = vim/vim.symlink/bundle/vim-osc52
+	url = https://github.com/fcpg/vim-osc52
+[submodule "vim/vim.symlink/bundle/vim-oscyank"]
+	path = vim/vim.symlink/bundle/vim-oscyank
+	url = https://github.com/ojroques/vim-oscyank

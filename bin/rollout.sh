@@ -1,6 +1,6 @@
 #!/bin/sh
 
-FULLPATH=`pwd`
+FULLPATH=`pwd -P`
 
 while [ $FULLPATH != $HOME ] && [ ! -x $FULLPATH/rollout.sh ] && [ ! -f $FULLPATH/.project ]; do
     FULLPATH=`dirname $FULLPATH`;
@@ -13,7 +13,7 @@ fi
 
 if [ -f $FULLPATH/.project ]; then
 
-	other_options="-t"
+	other_options="-c"
     source $FULLPATH/.project
 
     dry_run=""
@@ -49,14 +49,14 @@ if [ -f $FULLPATH/.project ]; then
         exit;
     fi
 
-    FULLPATH=`readlink -f $1`
+    FULLPATH=`readlink -f "$1"`
     RELPATH=`echo $FULLPATH | sed -e "s|$LOCAL_ROOT||"`
 
     if [ "$FULLPATH" == "$LOCAL_ROOT" ] ; then
         FULLPATH="$FULLPATH/"
     fi
 
-    if [ -d $FULLPATH ] && [ "$RELPATH" != "" ] ; then
+    if [ -d "$FULLPATH" ] && [ "$RELPATH" != "" ] ; then
         RELPATH=`dirname $RELPATH`;
         if [ "$RELPATH" == "/" ] ; then
             RELPATH=""
@@ -68,5 +68,5 @@ if [ -f $FULLPATH/.project ]; then
 	if [ $verbose == 1 ] ; then
 		echo "rsync $other_options -vi $compress $excludes $dry_run $recursive $FULLPATH $REMOTE_ROOT$RELPATH"
 	fi
-    rsync $other_options -vi --progress $compress $excludes $dry_run $recursive $FULLPATH $REMOTE_ROOT$RELPATH
+    rsync $other_options -vi --progress $compress $excludes $dry_run $recursive "$FULLPATH" "$REMOTE_ROOT$RELPATH"
 fi
