@@ -1,0 +1,11 @@
+#!/bin/bash
+
+FULLPATH=`pwd -P`
+
+while [ $FULLPATH != $HOME ] && [ ! -f $FULLPATH/.project ]; do
+    FULLPATH=`dirname $FULLPATH`;
+done
+
+source $FULLPATH/.project;
+SERVER=`echo $REMOTE_ROOT | sed -e 's/:.*//'`
+ssh $SERVER
